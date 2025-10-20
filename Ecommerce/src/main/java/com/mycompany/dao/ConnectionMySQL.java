@@ -5,6 +5,8 @@
 package com.mycompany.dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
@@ -12,19 +14,31 @@ import java.sql.Connection;
  */
 public class ConnectionMySQL implements ConnectionBD{
     
-    private static final String URL = "jdbc:msql://localhost:3307/ecommerce";
+    private static final String URL = "jdbc:mysql://localhost:3306/ecommerce";
     private static final String USUARIO = "root";
-    private static final String SENHAR = "catolica";
-     
+    private static final String SENHA = "root";
 
     @Override
     public Connection obterConexao() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            return DriverManager.getConnection(URL, USUARIO, SENHA);
+        } catch (SQLException erro) {
+            System.out.println("Erro ao obter conexão com o banco de dados!");
+            erro.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void fecharConexao(Connection conexao) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (conexao != null) {
+            try {
+                conexao.close();
+            } catch (SQLException erro) {
+                System.out.println("Erro ao fechar conexão!");
+                erro.printStackTrace();
+            }
+        }
     }
     
 }
